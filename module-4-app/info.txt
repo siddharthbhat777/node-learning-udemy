@@ -1,0 +1,12 @@
+1. 'package.json' is a file which keeps all the information of your application.
+2. It contains data in key-value pair, where all the keys must be in double inverted commas("").
+3. You can also edit it.
+4. The key 'script' mainly states a common command which will run your app and the developer won't
+   need to guess which is the entry file.
+5. In that if you mention "start" as your keyword, then you can run the application in 2 ways:
+    a. npm start
+    b. npm run start
+   It is because 'start' is a default npm keyword to start an application.
+6. On the other hand if you put any arbitary keyword of your choice e.g. siddharth-start,
+   then the command "npm siddharth-start" will be invalid.
+   Then you can only use command i.e. "npm run siddharth-start".

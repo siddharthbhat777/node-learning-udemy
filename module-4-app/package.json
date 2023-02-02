@@ -1,0 +1,13 @@
+{
+  "name": "module-4-app",
+  "version": "1.0.0",
+  "description": "My First npm command.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "siddharth-start": "node app.js"
+  },
+  "author": "Siddharth Bhat",
+  "license": "ISC"
+}

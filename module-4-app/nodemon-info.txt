@@ -1,2 +1,5 @@
 - nodemon is an external package.
 - it helps to code the application dynamically while running it.
+- to use nodemon functionality, you will need to make a change in your script of package.json file,
+  the change will be instead of value "node app.js" you will need to put "nodemon app.js". Can be
+  "start" or custom made script.

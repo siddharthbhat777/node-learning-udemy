@@ -1,0 +1,2 @@
+- nodemon is an external package.
+- it helps to code the application dynamically while running it.

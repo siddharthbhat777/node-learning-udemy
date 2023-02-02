@@ -1,0 +1,27 @@
+- installation of a package can be done with 3 ways, lets take an example of nodemon package.
+  1. npm install nodemon --save
+    It will indicate that the package will use as production dependency where we really use it in
+    and need it.
+  2. npm install nodemon --save-dev
+    It indicate that we are using dependency just as a developer for development.
+  3. npm install nodemon -g
+    It indicates that we are installing packages globally, meaning throughout our machine
+    just like we install node.js. As other ways of installing is local, meaning it will only
+    get installed over a project.
+  4. npm install nodemon
+    It is a default way of installing a package when we don't really know how are we gonna use
+    the package.
+- once you install it, the name and the version of the package will also be mentioned in
+  package.json file.
+- after installing it will also create node_modules folder and package-lock.json file.
+    a. node_modules:
+      - It will contain whole built code of the package along with their own package.json file
+        with other dependencies the package need.
+      - If you want to share the code to somewhere else then you can delete node_modules folder,
+        as you can reinstall it on any machine with "npm install" command.
+    b. package-lock.json:
+      It will contain the exact precise version of packages.
+- the arrow mark beside the verion of package in package.json indicates that whenever you are
+  going to install the packages for the application with "npm install" command, at that time
+  it states that the package might have a newer version currently, so check before installing
+  and also install it if necessary.

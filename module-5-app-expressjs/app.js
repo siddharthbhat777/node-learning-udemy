@@ -1,6 +1,7 @@
 /* Watch Section 5 if you have any doubts */
 // const http = require('http');
 
+const path = require('path');
 const express = require('express');
 
 const bodyParser = require('body-parser');
@@ -11,13 +12,15 @@ const shopRoutes = require('./routes/shop');
 const app = express(); // express package returns a method called "express()"
 
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(adminRoutes);
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
-    res.status(404).send("<h1>Page not found.</h1>")
+    res.status(404).sendFile(path.join(__dirname, 'views', 'page-not-found.html'));
 });
+
 
 /*
 app.use((req, res, next)=>{ // 'app.use()' helps you to set up middlewares

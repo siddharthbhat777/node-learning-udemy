@@ -1,5 +1,5 @@
 {
-  "name": "module-4-app",
+  "name": "module-4-app-nodemon",
   "version": "1.0.0",
   "description": "My First npm command.",
   "main": "app.js",

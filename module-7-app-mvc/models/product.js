@@ -13,8 +13,11 @@ const getProductsFromFile = cb => { // it has been done to make this functionali
 };
 
 module.exports = class Product {
-    constructor(title) {
+    constructor(title, imageUrl, price, description) {
         this.title = title;
+        this.imageUrl = imageUrl;
+        this.price = price;
+        this.description = description;
     }
 
     save() {
@@ -35,12 +38,12 @@ module.exports = class Product {
         -   after pushing, you will need to put the product into your file
         -   but you can only put the json formatted file and then convert it back later
         -   so as to convert javascript object to again a JSON file, you will need to use a
-            function 'JSON.stringify()' on line 24.
+            function 'JSON.stringify()' on line 27.
         -   and after processing it in function 'getProductsFromFile()' on line 6,
             you convert it back to normal javascript object with 'JSON.parse()' method
             on line 11.
-        -   Important point to note: if you don't make an arrow function on line 22 then
-            'this' keyword on line 23 wont get any class context and won't be able to add the 
+        -   Important point to note: if you don't make an arrow function on line 25 then
+            'this' keyword on line 26 wont get any class context and won't be able to add the 
             product into the file
         */
     }
@@ -68,10 +71,10 @@ module.exports = class Product {
     -   As it is an asynchronous function so it cannot return anything but will just give a
         promise to provide results lateron.
     -   to do so, you will use a callback function 'cb' which will just provide a data without
-        any return statements which is shown on line 76.
+        any return statements which is shown on line 79.
     -   so as to fetch data from such function is to use an arrow function in controller
-        and provide all the data when it is ready, which is done in 'products.js' in
-        'controllers' folder on line number 29.  
+        and provide all the data when it is ready, which is done in 'shop.js' in
+        'controllers' folder on line number 13.  
     */
     /* static fetchAll(cb) {
         const p = path.join(path.dirname(require.main.filename), 'data', 'products.json');

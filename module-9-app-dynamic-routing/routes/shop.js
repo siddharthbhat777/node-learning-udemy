@@ -10,6 +10,8 @@ router.get('/', shopController.getIndex);
 
 router.get('/products', shopController.getProducts);
 
+router.get('/products/:productId', shopController.getProduct); // ':' means the string could be arbitary
+
 router.get('/cart', shopController.getCart);
 
 router.get('/orders', shopController.getOrders);

@@ -1,14 +1,14 @@
 {
-  "name": "nodejs-complete-guide",
+  "name": "module-9-app-dynamic-routing",
   "version": "1.0.0",
-  "description": "Complete Node.js Guide",
+  "description": "Dynamic Routing",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
     "start-server": "node app.js"
   },
-  "author": "Maximilian Schwarzmüller",
+  "author": "Siddharth Bhat",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^1.18.3"

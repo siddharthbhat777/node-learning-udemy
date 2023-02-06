@@ -14,7 +14,7 @@ module.exports = class Cart {
             // error = there is no item in cart / cart not exist
             if (!err) {
                 // if no error then convert JSON to JavaScript Object and retrieve all items in cart array
-                cart = JSON.parse(fileContent); 
+                cart = JSON.parse(fileContent);
             }
 
             // Analyze the cart => Find existing product
@@ -45,6 +45,22 @@ module.exports = class Cart {
 
             // Update cart in JSON file
             fs.writeFile(p, JSON.stringify(cart), err => {
+                console.log(err); // if printed null meaning there is no error
+            });
+        });
+    }
+
+    static deleteProduct(id, productPrice) {
+        fs.readFile(p, (err, fileContent) => {
+            if (err) {
+                return;
+            }
+            const updatedCart = { ...JSON.parse(fileContent) };
+            const product = updatedCart.products.find(prod => prod.id === id);
+            const productQty = product.qty;
+            updatedCart.products = updatedCart.products.filter(prod => prod.id !== id)
+            updatedCart.totalPrice = updatedCart.totalPrice - productPrice * productQty;
+            fs.writeFile(p, JSON.stringify(updatedCart), err => {
                 console.log(err); // if printed null meaning there is no error
             });
         });

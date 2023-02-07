@@ -11,6 +11,16 @@ module.exports = class Product {
   }
 
   save() {
+    /* 
+    Why do we use '?' instead of directly putting data? 
+    - '?' is a security measure by MySQL, where it first gets the data, then verifies if there is
+      any suspecious value and then it puts it automatically in place of '?'
+      e.g. SQL Injection
+    */
+    return db.execute( // 'id' specified automatically by MySQL
+      'INSERT INTO products (title, price, imageUrl, description) VALUES (?, ?, ?, ?)',
+      [this.title, this.price, this.imageUrl, this.description]
+    ); 
   }
 
   static deleteById(id) {

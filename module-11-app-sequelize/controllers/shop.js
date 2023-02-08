@@ -15,9 +15,11 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findById(prodId).then(([product]) => {
+  // Alternative way
+  // Product.findAll({where: {id: prodId}}).then(-//- product: products[0], pageTitle: products[0].title).catch();
+  Product.findByPk(prodId).then(product => { // 'findByPK' is same as 'findById'
     res.render('shop/product-detail', {
-      product: product[0],
+      product: product,
       pageTitle: product.title,
       path: '/products'
     });

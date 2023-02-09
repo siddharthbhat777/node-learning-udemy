@@ -49,7 +49,7 @@ sequelize.sync()
 - also defines relationships between models
 */
 // sequelize.sync({ force: true }).then((result) => { // 'force:true' means overriding table with new changes
-sequelize.sync({force: true}).then((result) => { // 'force:true' means overriding table with new changes
+sequelize.sync().then((result) => { // 'force:true' means overriding table with new changes
     return User.findByPk(1);
     // console.log(result);
 }).then(user => {
@@ -59,6 +59,8 @@ sequelize.sync({force: true}).then((result) => { // 'force:true' means overridin
     return user;
 }).then(user => {
     // console.log(user);
+    return user.createCart();
+}).then(cart => {
     app.listen(3000);
 }).catch((err) => {
     console.log(err);

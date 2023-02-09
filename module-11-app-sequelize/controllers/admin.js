@@ -13,7 +13,7 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  req.user.createProduct({
+  req.user.createProduct({ // createProduct() is not an inbuilt method but a method created by sequelize based on our model
     title: title,
     price: price,
     imageUrl: imageUrl,

@@ -7,6 +7,8 @@ const errorController = require('./controllers/error');
 const sequelize = require('./util/database'); // creating constant
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 
 const app = express();
 
@@ -33,8 +35,13 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
+// Associations
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Product); // one user can have many products
+User.hasOne(Cart); // one user can only have one cart
+Cart.belongsTo(User); // Just vice versa not necessary to do this
+Cart.belongsToMany(Product, { through: CartItem }); // multiple products in one cart
+Product.belongsToMany(Cart, { through: CartItem }); // different carts of different users
 
 /*
 sequelize.sync()
@@ -42,7 +49,7 @@ sequelize.sync()
 - also defines relationships between models
 */
 // sequelize.sync({ force: true }).then((result) => { // 'force:true' means overriding table with new changes
-sequelize.sync().then((result) => { // 'force:true' means overriding table with new changes
+sequelize.sync({force: true}).then((result) => { // 'force:true' means overriding table with new changes
     return User.findByPk(1);
     // console.log(result);
 }).then(user => {

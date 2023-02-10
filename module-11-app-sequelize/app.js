@@ -9,6 +9,8 @@ const Product = require('./models/product');
 const User = require('./models/user');
 const Cart = require('./models/cart');
 const CartItem = require('./models/cart-item');
+const Order = require('./models/order');
+const OrderItem = require('./models/order-item');
 
 const app = express();
 
@@ -42,6 +44,9 @@ User.hasOne(Cart); // one user can only have one cart
 Cart.belongsTo(User); // Just vice versa not necessary to do this
 Cart.belongsToMany(Product, { through: CartItem }); // multiple products in one cart
 Product.belongsToMany(Cart, { through: CartItem }); // different carts of different users
+Order.belongsTo(User);
+User.hasMany(Order);
+Order.belongsToMany(Product, { through: OrderItem })
 
 /*
 sequelize.sync()

@@ -16,6 +16,21 @@ class Product {
       console.log(err);
     });
   }
+
+  static fetchAll() {
+    const db = getDb();
+    return db.collection('products').find().toArray().then((products) => {
+      console.log(products);
+      return products;
+    }).catch((err) => {
+      console.log(err);
+    });
+    /*
+    toArray(): takes all of your data onto an array to display them at once
+    - only use it if you know your data is limited upto hundreds
+    - if the data is huge then prefer pagination
+    */
+  }
 }
 
 module.exports = Product;

@@ -3,7 +3,7 @@ const MongoClient = mongodb.MongoClient;
 let _db; // you can give any name but '_' usually states that the variable will be used internally
 
 const mongoConnect = (callback) => {
-    MongoClient.connect('mongodb+srv://node-learning-app:SidB2023@nodelearningnosql.81hjxqp.mongodb.net/?retryWrites=true&w=majority').then((client) => {
+    MongoClient.connect('mongodb+srv://node-learning-app:SidB2023@nodelearningnosql.81hjxqp.mongodb.net/shop?retryWrites=true&w=majority').then((client) => {
         console.log("Connected!");
         _db = client.db();
         callback();

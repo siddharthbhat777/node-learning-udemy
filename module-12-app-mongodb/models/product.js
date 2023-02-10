@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize');
-
 const sequelize = require('../util/database');
 
 const Product = sequelize.define('product', {
@@ -9,7 +8,7 @@ const Product = sequelize.define('product', {
     allowNull: false,
     primaryKey: true
   },
-  title: Sequelize.STRING,
+  title: Sequelize.STRING, // If you just want to set a Type
   price: {
     type: Sequelize.DOUBLE,
     allowNull: false
@@ -21,7 +20,7 @@ const Product = sequelize.define('product', {
   description: {
     type: Sequelize.STRING,
     allowNull: false
-  }
+  },
 });
 
 module.exports = Product;

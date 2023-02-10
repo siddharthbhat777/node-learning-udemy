@@ -1,7 +1,7 @@
 {
-  "name": "module-12-app-mongodb",
+  "name": "module-11-app-sequelize",
   "version": "1.0.0",
-  "description": "MongoDB Introduction",
+  "description": "Sequelize with NodeJs",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,8 +17,8 @@
     "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
-    "mysql2": "^1.6.1",
+    "mysql2": "^3.1.1",
     "pug": "^2.0.3",
-    "sequelize": "^5.0.0-beta.11"
+    "sequelize": "^6.28.0"
   }
 }

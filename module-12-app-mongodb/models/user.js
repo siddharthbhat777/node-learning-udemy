@@ -76,13 +76,13 @@ class User {
             this.cart = { item: [] };
             return db.collection('users').updateOne({ _id: new ObjectId(this._id) }, { $set: { cart: { items: [] } } });
         }).catch((err) => {
-
+            console.log(err);
         });
     }
 
     getOrders() {
         const db = getDb();
-        return db.collection('orders').find()
+        return db.collection('orders').find({'user._id': new ObjectId(this._id)}).toArray();
     }
 
     static findById(userId) {

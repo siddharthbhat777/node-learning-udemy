@@ -2,9 +2,9 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const errorController = require('./controllers/error');
-const mongoConnect = require('./util/database').mongoConnect;
 const User = require('./models/user');
 
 const app = express();
@@ -32,6 +32,9 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoConnect(() => {
+mongoose.connect('mongodb+srv://node-learning-app:SidB2023@nodelearningnosql.81hjxqp.mongodb.net/shop?retryWrites=true&w=majority').then((result) => {
     app.listen(3000);
+    console.log("Connected!");
+}).catch((err) => {
+    console.log(err);
 });

@@ -21,6 +21,25 @@ const productSchema = new Schema({
     }
 });
 
+/*
+- 'Product' is what you will call it all over your project. It's just like alias.
+- And normally the collection name in database will be displayed as 'products', as it converts
+  'Product' to all small case and in plural form, the reason it puts name as 'products'
+*/
+
+module.exports = mongoose.model('Product', productSchema);
+
+/*
+Why to create a Schema in NO-SQL?
+- We don't actually need any schema when we are creating models with a default method i.e. using 
+  mongoDB Driver(module-12)
+- As now we are using mongoose which will manage most of the stuffs for us, and will let us focus
+  more over our data. To do so, mongoose atleast needs to know how our data actually looks like,
+  so for that reason we define a structure of our data for mongoose.
+- This dosen't mean our data is not flexible, we can still fill half of the data and keep other data
+  as blank (which is called partial tolerance) unless we don't mention required attribute there.
+*/
+
 // const mongodb = require('mongodb');
 
 // class Product {

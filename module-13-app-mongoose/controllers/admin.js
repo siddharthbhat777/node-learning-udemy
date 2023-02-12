@@ -71,7 +71,9 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.find().then((products) => {
+  // select means selecting specific fields you need
+  // populate() basically populating all other fields inside userId object
+  Product.find()/* .select('title price -_id').populate('userId', 'name') */.then((products) => {
     res.render('admin/products', {
       prods: products,
       pageTitle: 'Admin Products',

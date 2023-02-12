@@ -3,7 +3,7 @@ const Product = require('../models/product');
 exports.getProducts = (req, res, next) => {
   // find() is mmongoose method same as fetchAll()
   // If data is large then use find().cursor(), which is called pagination
-  Product.find().then((products) => { 
+  Product.find().then((products) => {
     console.log(products);
     res.render('shop/product-list', {
       prods: products,
@@ -41,7 +41,8 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  req.user.getCart().then((products) => {
+  req.user.populate('cart.items.productId').then((user) => {
+    const products = user.cart.items;
     res.render('shop/cart', {
       path: '/cart',
       pageTitle: 'Your Cart',

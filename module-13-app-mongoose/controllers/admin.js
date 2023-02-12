@@ -80,7 +80,7 @@ exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   // ALternative way
   // Product.destroy(prodId);
-  Product.deleteById(prodId).then(() => {
+  Product.findByIdAndRemove(prodId).then(() => { // 'findByIdAndRemove()' is a built in method by mongoose
     console.log("DESTROYED PRODUCT");
     res.redirect('/admin/products');
   }).catch((err) => {

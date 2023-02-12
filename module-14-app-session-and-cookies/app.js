@@ -19,12 +19,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-    User.findById('63e892554839f9ee4f15ef3e').then((user) => {
-        req.user = user;
-        next();
-    }).catch((err) => {
-        console.log(err);
-    });
+  User.findById('63e892554839f9ee4f15ef3e')
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(err => console.log(err));
 });
 
 app.use('/admin', adminRoutes);
@@ -32,23 +32,25 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoose.connect('mongodb+srv://node-learning-app:SidB2023@nodelearningnosql.81hjxqp.mongodb.net/shop?retryWrites=true&w=majority').then((result) => {
-    User.findOne().then((user) => {
-        if (!user) {
-            const user = new User({
-                name: 'Siddharth',
-                email: 'sid123@gmail.com',
-                cart: {
-                    items: []
-                }
-            });
-            user.save();
-        }
-    }).catch((err) => {
-        console.log(err);
+mongoose
+  .connect(
+    'mongodb+srv://node-learning-app:SidB2023@nodelearningnosql.81hjxqp.mongodb.net/shop?retryWrites=true&w=majority'
+  )
+  .then(result => {
+    User.findOne().then(user => {
+      if (!user) {
+        const user = new User({
+          name: 'Max',
+          email: 'max@test.com',
+          cart: {
+            items: []
+          }
+        });
+        user.save();
+      }
     });
     app.listen(3000);
-    console.log("Connected!");
-}).catch((err) => {
+  })
+  .catch(err => {
     console.log(err);
-});
+  });

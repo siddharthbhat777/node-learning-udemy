@@ -37,9 +37,9 @@ exports.getIndex = (req, res, next) => {
       res.render('shop/index', {
         prods: products,
         pageTitle: 'Shop',
-        path: '/',
-        isAuthenticated: req.session.isLoggedIn,
-        csrfToken: req.csrfToken() // method provided by csrf middleware
+        path: '/'
+        // isAuthenticated: req.session.isLoggedIn,
+        // csrfToken: req.csrfToken() // method provided by csrf middleware
       });
     })
     .catch(err => {

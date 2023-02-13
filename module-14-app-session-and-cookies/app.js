@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const session = require('express-session');
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -18,6 +19,10 @@ const authRoutes = require('./routes/auth');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false }));
+// secret - in production 'secret' should be a long string value
+// resave - session will not save on any req or res, it will be only saved if some data gets changed
+// saveUninitialized - no session gets saved when dosen't need to be saved
 
 app.use((req, res, next) => {
   User.findById('63e892554839f9ee4f15ef3e')

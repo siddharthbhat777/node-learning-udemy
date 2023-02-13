@@ -1,8 +1,0 @@
-How does CSRF work?
-1. So, first user mistakenly visit a fake website that lokks exactly like our site.
-2. then user sends request to that fake page and that page redirect that user to the original page along with the malicious stuffs with the redirection link.
-3. after that, the kind of a post request is sent which generates response which user did not expected.
-
-How to avoid it?
-1. Make a kind of condition with which user can only use a session if they are working with your views.
-2. such thing will not allow fake pages to interact with our website.

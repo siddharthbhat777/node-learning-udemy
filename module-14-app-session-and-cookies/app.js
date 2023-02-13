@@ -31,15 +31,6 @@ app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false, 
 // resave - session will not save on any req or res, it will be only saved if some data gets changed
 // saveUninitialized - no session gets saved when dosen't need to be saved
 
-app.use((req, res, next) => {
-  User.findById('63e892554839f9ee4f15ef3e')
-    .then(user => {
-      req.user = user;
-      next();
-    })
-    .catch(err => console.log(err));
-});
-
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);

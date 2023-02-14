@@ -143,7 +143,7 @@ exports.postReset = (req, res, next) => {
         return res.redirect('/reset');
       }
       user.resetToken = token;
-      user.resetTokenExpression = Date.now() + 3600000;
+      user.resetTokenExpiration = Date.now() + 3600000;
       return user.save();
     }).then(result => {
       res.redirect('/');
@@ -159,5 +159,55 @@ exports.postReset = (req, res, next) => {
     }).catch((err) => {
       console.log(err);
     });
+  });
+};
+
+exports.getNewPassword = (req, res, next) => {
+  const token = req.params.token;
+  User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() } }).then((user) => {
+    let message = req.flash('error');
+    if (message.length > 0) {
+      message = message[0];
+    } else {
+      message = null;
+    }
+    res.render('auth/new-password', {
+      path: '/new-password',
+      pageTitle: 'New Password',
+      errorMessage: message,
+      userId: user._id.toString(),
+      passwordToken: token,
+      email: user.email
+    });
+  }).catch((err) => {
+    console.log(err);
+  });
+};
+
+exports.postNewPassword = (req, res, next) => {
+  const newPassword = req.body.password;
+  const userId = req.body.userId;
+  const passwordToken = req.body.passwordToken;
+  const email = req.body.email;
+  let resetUser;
+
+  User.findOne({ resetToken: passwordToken, resetTokenExpiration: { $gt: Date.now() }, _id: userId }).then((user) => {
+    resetUser = user;
+    return bcrypt.hash(newPassword, 12);
+  }).then(hashedPassword => {
+    resetUser.password = hashedPassword;
+    resetUser.resetToken = undefined;
+    resetUser.resetTokenExpiration = undefined;
+    return resetUser.save();
+  }).then(result => {
+    res.redirect('/login');
+    transporter.sendMail({
+      to: email,
+      from: 'siddharthbhat777@gmail.com',
+      subject: 'Password Update Succeeded!',
+      html: '<h1>Your new password has been updated successfully!</h1>'
+    });
+  }).catch((err) => {
+    console.log(err);
   });
 };

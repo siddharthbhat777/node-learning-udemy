@@ -12,7 +12,7 @@ const userSchema = new Schema({
     required: true
   },
   resetToken: String, // not required type because we don't always want to reset password
-  resetTokenExpression: Date,
+  resetTokenExpiration: Date,
   cart: {
     items: [
       {

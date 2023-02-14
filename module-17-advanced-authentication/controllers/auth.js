@@ -1,4 +1,4 @@
-const crypto = require('crypto'); // in-built library of node js
+const crypto = require('crypto'); // in-built library of node js helps in creating unique random values
 const bcrypt = require('bcryptjs'); // package which encrypts password
 const nodemailer = require('nodemailer');
 // const sendgridTransport = require('nodemailer-sendgrid-transport');
@@ -131,19 +131,19 @@ exports.getReset = (req, res, next) => {
 };
 
 exports.postReset = (req, res, next) => {
-  crypto.randomBytes(32, (err, buffer) => {
+  crypto.randomBytes(32, (err, buffer) => { // normally crypto returns a buffer of random values
     if (err) {
       console.log(err);
       return res.redirect('/reset');
     }
-    const token = buffer.toString('hex');
+    const token = buffer.toString('hex'); // to generate random value from this buffer we will do this
     User.findOne({ email: req.body.email }).then((user) => {
       if (!user) {
         req.flash('error', 'No account with that email found.');
         return res.redirect('/reset');
       }
       user.resetToken = token;
-      user.resetTokenExpiration = Date.now() + 3600000;
+      user.resetTokenExpiration = Date.now() + 3600000; // current time + 1 , as we are setting expiration time here
       return user.save();
     }).then(result => {
       res.redirect('/');
@@ -164,6 +164,7 @@ exports.postReset = (req, res, next) => {
 
 exports.getNewPassword = (req, res, next) => {
   const token = req.params.token;
+  // '$gt: Date.now()' means greater than current time i.e. user should reset password before expiration time i.e. 1 hour
   User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() } }).then((user) => {
     let message = req.flash('error');
     if (message.length > 0) {
@@ -196,8 +197,8 @@ exports.postNewPassword = (req, res, next) => {
     return bcrypt.hash(newPassword, 12);
   }).then(hashedPassword => {
     resetUser.password = hashedPassword;
-    resetUser.resetToken = undefined;
-    resetUser.resetTokenExpiration = undefined;
+    resetUser.resetToken = undefined; // to re-initialize
+    resetUser.resetTokenExpiration = undefined; // to re-initialize
     return resetUser.save();
   }).then(result => {
     res.redirect('/login');

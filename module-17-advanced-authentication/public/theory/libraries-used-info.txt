@@ -9,3 +9,6 @@
 
 4. connect-flash
     - when you want to store anything over a session for few seconds, you will use connect-flash in such case
+
+5. crypto
+    - generate random valued buffer

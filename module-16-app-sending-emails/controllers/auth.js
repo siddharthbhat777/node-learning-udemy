@@ -1,6 +1,23 @@
 const bcrypt = require('bcryptjs'); // package which encrypts password
+const nodemailer = require('nodemailer');
+// const sendgridTransport = require('nodemailer-sendgrid-transport');
 
 const User = require('../models/user');
+
+// const transporter = nodemailer.createTransport(sendgridTransport({
+//   auth: {
+//     api_key: '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'
+//   }
+// }));
+
+// using normal default way instead of send-grid because it was not working
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'siddharthbhat777@gmail.com',
+    pass: 'njcqlksvxtuhzbad'
+  }
+});
 
 exports.getLogin = (req, res, next) => {
   let message = req.flash('error');
@@ -77,6 +94,14 @@ exports.postSignup = (req, res, next) => {
       return user.save();
     }).then(result => {
       res.redirect('/login');
+      return transporter.sendMail({
+        to: email,
+        from: 'siddharthbhat777@gmail.com',
+        subject: 'Signup Succeeded!',
+        html: '<h1>You successfully signed up!</h1>'
+      });
+    }).catch(err => {
+      console.log(err);
     });
   }).catch((err) => {
     console.log(err);

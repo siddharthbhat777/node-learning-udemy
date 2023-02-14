@@ -11,6 +11,8 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  resetToken: String, // not required type because we don't always want to reset password
+  resetTokenExpression: Date,
   cart: {
     items: [
       {

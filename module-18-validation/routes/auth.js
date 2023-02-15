@@ -18,14 +18,21 @@ router.post('/signup',
             .withMessage('Please enter a valid email.')
             .custom((value, { req }) => {
                 if (value === 'test@test.com') {
-                    throw new Error('This email address is forbidden.')
+                    throw new Error('This email address is forbidden.');
                 }
                 return true;
             }),
         body('password', 'Please enter a password with only numbers and text and atleast 5 characters.')
-        .isLength({min: 5}).isAlphanumeric()
-    ],
-    authController.postSignup
+            .isLength({ min: 5 })
+            .isAlphanumeric(),
+        body('confirmPassword').custom((value, { req }) => {
+            if (value !== req.body.password) {
+                throw new Error('Passwords have to match!');
+            }
+            return true;
+        })
+],
+authController.postSignup
 );
 
 router.post('/logout', authController.postLogout);

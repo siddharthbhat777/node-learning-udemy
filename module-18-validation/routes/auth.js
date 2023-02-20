@@ -14,9 +14,11 @@ router.post('/login',
     [
         body('email')
             .isEmail()
-            .withMessage('Please enter valid email address.'),
+            .withMessage('Please enter valid email address.')
+            .normalizeEmail(), // it will store email in database in lowercase also will remove whitespaces
         body('password', 'Password has to be valid.') // default message
-            .isLength({min: 5})
+            .isLength({ min: 5 })
+            .trim()
     ], authController.postLogin);
 
 router.post('/signup',
@@ -35,11 +37,15 @@ router.post('/signup',
                         return Promise.reject('E-Mail exists already, please pick a different one.');
                     }
                 })
-            }),
+            })
+            .normalizeEmail(),
         body('password', 'Please enter a password with only numbers and text and atleast 5 characters.')
             .isLength({ min: 5 })
-            .isAlphanumeric(),
-        body('confirmPassword').custom((value, { req }) => {
+            // .isAlphanumeric() // only allow to enter password with alphabets and numbers
+            .trim(),
+        body('confirmPassword')
+        .trim()
+        .custom((value, { req }) => {
             if (value !== req.body.password) {
                 throw new Error('Passwords have to match!');
             }

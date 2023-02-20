@@ -36,7 +36,7 @@ router.get('/edit-product/:productId', isAuth, adminController.getEditProduct);
 router.post('/edit-product',
     [
         body('title', 'Invalid title value.')
-            .isLength({ max: 20 }).withMessage('Cannot exceed above 20 characters.')
+            .isLength({ min: 3, max: 20 })
             .isString()
             .trim(),
         body('imageUrl', 'Please enter valid URL.')
@@ -46,6 +46,7 @@ router.post('/edit-product',
             .isFloat()
             .trim(),
         body('description', 'Please enter valid description.')
+            .isLength({ min: 5, max: 500 })
             .isString()
     ], isAuth, adminController.postEditProduct);
 

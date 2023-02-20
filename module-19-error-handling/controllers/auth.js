@@ -113,8 +113,11 @@ exports.postLogin = (req, res, next) => {
         console.log(err);
         res.redirect('/login');
       });
-    })
-    .catch(err => console.log(err));
+    }).catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.postSignup = (req, res, next) => {
@@ -151,7 +154,9 @@ exports.postSignup = (req, res, next) => {
       html: '<h1>You successfully signed up!</h1>'
     });
   }).catch(err => {
-    console.log(err);
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
   });
 };
 
@@ -202,8 +207,10 @@ exports.postReset = (req, res, next) => {
         <p>Click <a href="http://localhost:3000/reset/${token}">here</a> link to set a new password.</p>
         `
       });
-    }).catch((err) => {
-      console.log(err);
+    }).catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
   });
 };
@@ -226,8 +233,10 @@ exports.getNewPassword = (req, res, next) => {
       passwordToken: token,
       email: user.email
     });
-  }).catch((err) => {
-    console.log(err);
+  }).catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
   });
 };
 
@@ -254,7 +263,9 @@ exports.postNewPassword = (req, res, next) => {
       subject: 'Password Update Succeeded!',
       html: '<h1>Your new password has been updated successfully!</h1>'
     });
-  }).catch((err) => {
-    console.log(err);
+  }).catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
   });
 };

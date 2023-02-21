@@ -1,0 +1,14 @@
+1. express-session
+    - manage sessions for middleware applications
+
+2. connect-mongodb-session
+    - helps to have session management over the data of mongodb database.
+
+3. bcryptjs
+    - it is a package which helps you to secure password by encrypting it a salt to generate hash value to store on database
+
+4. connect-flash
+    - when you want to store anything over a session for few seconds, you will use connect-flash in such case
+
+5. crypto
+    - generate random valued buffer

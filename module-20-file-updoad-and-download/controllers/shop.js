@@ -184,6 +184,6 @@ exports.getInvoice = (req, res, next) => {
     file.pipe(res);
     */
   }).catch((err) => {
-    console.log(err);
+    next(err);
   });
 };

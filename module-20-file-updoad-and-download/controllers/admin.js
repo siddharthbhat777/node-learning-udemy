@@ -1,3 +1,5 @@
+const fileHelper = require('../util/file');
+
 const Product = require('../models/product');
 const { validationResult } = require('express-validator/check');
 
@@ -60,13 +62,13 @@ exports.postAddProduct = (req, res, next) => {
     userId: req.user
   });
   product.save().then(result => {
-      console.log('Created Product');
-      res.redirect('/admin/products');
-    }).catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+    console.log('Created Product');
+    res.redirect('/admin/products');
+  }).catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 };
 
 exports.getEditProduct = (req, res, next) => {
@@ -76,23 +78,23 @@ exports.getEditProduct = (req, res, next) => {
   }
   const prodId = req.params.productId;
   Product.findById(prodId).then(product => {
-      if (!product) {
-        return res.redirect('/');
-      }
-      res.render('admin/edit-product', {
-        pageTitle: 'Edit Product',
-        path: '/admin/edit-product',
-        editing: editMode,
-        product: product,
-        hasError: false,
-        errorMessage: null,
-        validationErrors: []
-      });
-    }).catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
+    if (!product) {
+      return res.redirect('/');
+    }
+    res.render('admin/edit-product', {
+      pageTitle: 'Edit Product',
+      path: '/admin/edit-product',
+      editing: editMode,
+      product: product,
+      hasError: false,
+      errorMessage: null,
+      validationErrors: []
     });
+  }).catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -128,6 +130,7 @@ exports.postEditProduct = (req, res, next) => {
     product.price = updatedPrice;
     product.description = updatedDesc;
     if (updatedImage) {
+      fileHelper.deleteFile(product.imageUrl);
       product.imageUrl = updatedImage.path;
     }
     return product.save().then(result => {
@@ -143,26 +146,32 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   Product.find({ userId: req.user._id })/* .select('title price -_id').populate('userId', 'name') */.then(products => {
-      res.render('admin/products', {
-        prods: products,
-        pageTitle: 'Admin Products',
-        path: '/admin/products'
-      });
-    }).catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
+    res.render('admin/products', {
+      prods: products,
+      pageTitle: 'Admin Products',
+      path: '/admin/products'
     });
+  }).catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 };
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteOne({ _id: prodId, userId: req.user._id }).then(() => {
-      console.log('DESTROYED PRODUCT');
-      res.redirect('/admin/products');
-    }).catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+  Product.findById(prodId).then((product) => {
+    if (!product) {
+      return next(new Error('Product not found.'));
+    }
+    fileHelper.deleteFile(product.imageUrl);
+    return Product.deleteOne({ _id: prodId, userId: req.user._id })
+  }).then(() => {
+    console.log('DESTROYED PRODUCT');
+    res.redirect('/admin/products');
+  }).catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 };

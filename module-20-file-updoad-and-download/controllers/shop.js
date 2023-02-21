@@ -139,6 +139,9 @@ exports.getInvoice = (req, res, next) => {
     }
     const invoiceName = 'invoice-' + orderId + '.pdf';
     const invoicePath = path.join('data', 'invoices', invoiceName);
+    /*
+    FOR SMALL FILES
+
     fs.readFile(invoicePath, (err, data) => {
       if (err) {
         return next(err);
@@ -146,9 +149,15 @@ exports.getInvoice = (req, res, next) => {
       res.setHeader('Content-Type', 'application/pdf');
       // inline - open pdf in browser
       // attachment - download pdf
-      res.setHeader('Content-Disposition', 'inline; filename="' + invoiceName + '"')
+      res.setHeader('Content-Disposition', 'inline; filename="' + invoiceName + '"');
       res.send(data);
     });
+    */
+    // FOR SMALL and LARGE SIZED FILES - RECOMMENDED
+    const file = fs.createReadStream(invoicePath);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'inline; filename="' + invoiceName + '"');
+    file.pipe(res);
   }).catch((err) => {
     console.log(err);
   });

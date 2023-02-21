@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const PDFDocument = require('pdfkit');
+
 const Product = require('../models/product');
 const Order = require('../models/order');
 
@@ -139,6 +141,17 @@ exports.getInvoice = (req, res, next) => {
     }
     const invoiceName = 'invoice-' + orderId + '.pdf';
     const invoicePath = path.join('data', 'invoices', invoiceName);
+
+    const pdfDoc = new PDFDocument();
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'inline; filename="' + invoiceName + '"');
+    pdfDoc.pipe(fs.createWriteStream(invoicePath));
+    pdfDoc.pipe(res);
+
+    // content we want in pdf
+    pdfDoc.text('Hello World!');
+
+    pdfDoc.end();
     /*
     FOR SMALL FILES
 
@@ -154,10 +167,12 @@ exports.getInvoice = (req, res, next) => {
     });
     */
     // FOR SMALL and LARGE SIZED FILES - RECOMMENDED
+    /*
     const file = fs.createReadStream(invoicePath);
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', 'inline; filename="' + invoiceName + '"');
     file.pipe(res);
+    */
   }).catch((err) => {
     console.log(err);
   });

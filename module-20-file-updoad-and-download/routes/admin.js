@@ -21,9 +21,6 @@ router.post('/add-product',
             .isLength({ max: 20 }).withMessage('Cannot exceed above 20 characters.')
             .isString()
             .trim(),
-        body('imageUrl', 'Please enter valid URL.')
-            .isURL()
-            .trim(),
         body('price', 'Please enter valid price.')
             .isFloat()
             .trim(),

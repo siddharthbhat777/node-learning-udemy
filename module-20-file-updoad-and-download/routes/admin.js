@@ -36,9 +36,6 @@ router.post('/edit-product',
             .isLength({ min: 3, max: 20 })
             .isString()
             .trim(),
-        body('imageUrl', 'Please enter valid URL.')
-            .isURL()
-            .trim(),
         body('price', 'Please enter valid price.')
             .isFloat()
             .trim(),

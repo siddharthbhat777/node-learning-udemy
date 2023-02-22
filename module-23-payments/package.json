@@ -1,7 +1,7 @@
 {
-  "name": "module-22-async-requests",
+  "name": "module-23-payments",
   "version": "1.0.0",
-  "description": "Async Requests",
+  "description": "Payments",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

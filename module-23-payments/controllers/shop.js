@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const stripe = require('stripe')('sk_test_51MeAlHSHVA7qFsmuchzBdTKJJ3TxIJpTwxFyQjulVRTyNcOSiQY4bkVIaV78SrBDZrVrJDnKfRKZxoEv8r0JEh1a00uv2fePkS');
 
 const PDFDocument = require('pdfkit');
 
@@ -114,26 +115,51 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.getCheckout = (req, res, next) => {
-  req.user.populate('cart.items.productId').then(user => {
-    const products = user.cart.items;
-    let total = 0;
-    products.forEach(p => {
+  let products;
+  let total = 0;
+  req.user.populate("cart.items.productId").then((user) => {
+    products = user.cart.items;
+    total = 0;
+    products.forEach((p) => {
       total += p.quantity * p.productId.price;
     });
+
+    return stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: 'payment',
+      line_items: products.map((p) => {
+        return {
+          quantity: p.quantity,
+          price_data: {
+            currency: 'inr',
+            unit_amount: Math.round(p.productId.price * 100),
+            product_data: {
+              name: p.productId.title,
+              description: p.productId.description,
+            },
+          },
+        };
+      }),
+      customer_email: req.user.email,
+      success_url: req.protocol + '://' + req.get('host') + '/checkout/success',
+      cancel_url: req.protocol + '://' + req.get('host') + '/checkout/cancel',
+    });
+  }).then((session) => {
     res.render('shop/checkout', {
       path: '/checkout',
       pageTitle: 'Checkout',
       products: products,
-      totalSum: total
+      totalSum: total,
+      sessionId: session.id,
     });
-  }).catch(err => {
+  }).catch((err) => {
     const error = new Error(err);
     error.httpStatusCode = 500;
     return next(error);
   });
 };
 
-exports.postOrder = (req, res, next) => {
+exports.getCheckoutSuccess = (req, res, next) => {
   req.user.populate('cart.items.productId').then(user => {
     const products = user.cart.items.map(i => {
       return { quantity: i.quantity, product: { ...i.productId._doc } };
@@ -197,10 +223,10 @@ exports.getInvoice = (req, res, next) => {
     let totalPrice = 0;
     order.products.forEach(prod => {
       totalPrice += prod.quantity * prod.product.price;
-      pdfDoc.fontSize(14).text(prod.product.title + '-' + prod.quantity + ' x ' + '$' + prod.product.price)
+      pdfDoc.fontSize(14).text(prod.product.title + ' - ' + prod.quantity + ' x ' + 'Rs.' + prod.product.price)
     });
-    pdfDoc.text('------------------------------');
-    pdfDoc.fontSize(20).text('Total Price: $' + totalPrice);
+    pdfDoc.text('--------------------------------');
+    pdfDoc.fontSize(20).text('Total Price: Rs.' + totalPrice);
 
     pdfDoc.end();
   }).catch((err) => {

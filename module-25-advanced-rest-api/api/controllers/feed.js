@@ -37,7 +37,7 @@ exports.createPost = (req, res, next) => {
         console.log(result);
         res.status(201).json({ // 201: success and resource is created
             message: 'Post created successfully!',
-            post: result
+            post: result // result = data
         });
     }).catch((err) => {
         console.log(err);

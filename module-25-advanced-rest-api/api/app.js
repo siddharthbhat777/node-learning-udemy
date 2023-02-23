@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const multer = require('multer');
-const { v4: uuidv4 } = require('uuid');
 
 const feedRoutes = require('./routes/feed');
 
@@ -15,7 +14,7 @@ const fileStorage = multer.diskStorage({
         cb(null, 'images')
     },
     filename: (req, file, cb) => {
-        cb(null, uuidv4())
+        cb(null, new Date().getTime() + '-' + file.originalname)
     }
 });
 

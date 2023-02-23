@@ -1,3 +1,5 @@
+const path = require('path');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -8,6 +10,7 @@ const app = express();
 
 // app.use(bodyParser.urlencoded()); // default data - x-www-form-urlencoded
 app.use(bodyParser.json()); // this is good for applicaytion/json (api)
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // setting headers to avoid CORS error
 app.use((req, res, next) => {
@@ -19,6 +22,13 @@ app.use((req, res, next) => {
 });
 
 app.use('/feed', feedRoutes);
+
+app.use((error, req, res, next) => {
+    console.log(error);
+    const status = error.statusCode || 500; // setting default value as 500 if undefined
+    const message = error.message;
+    res.status(status).json({ message: message });
+});
 
 mongoose.connect('mongodb+srv://node-social-app:SidB2023@nodesocial.4wrvdbu.mongodb.net/messages?retryWrites=true&w=majority').then((result) => {
     app.listen(8080);

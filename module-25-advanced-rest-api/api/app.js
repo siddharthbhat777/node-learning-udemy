@@ -48,7 +48,8 @@ app.use((error, req, res, next) => {
     console.log(error);
     const status = error.statusCode || 500; // setting default value as 500 if undefined
     const message = error.message;
-    res.status(status).json({ message: message });
+    const data = error.data;
+    res.status(status).json({ message: message, data: data });
 });
 
 mongoose.connect('mongodb+srv://node-social-app:SidB2023@nodesocial.4wrvdbu.mongodb.net/messages?retryWrites=true&w=majority').then((result) => {

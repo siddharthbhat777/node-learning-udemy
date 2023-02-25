@@ -2,7 +2,10 @@ const fs = require('fs');
 const path = require('path');
 
 const { validationResult } = require('express-validator/check');
+
 const Post = require('../models/post');
+const User = require('../models/user');
+const user = require('../models/user');
 
 exports.getPosts = (req, res, next) => {
     const currentPage = req.query.page || 1; // keeping 1 as default value
@@ -37,19 +40,24 @@ exports.createPost = (req, res, next) => {
     const title = req.body.title;
     const content = req.body.content;
     const imageUrl = req.file.path.replace("\\", "/");
+    let creator;
     const post = new Post({
         title: title,
         content: content,
         imageUrl: imageUrl,
-        creator: {
-            name: 'Siddharth'
-        }
+        creator: req.userId
     });
     post.save().then((result) => {
-        console.log(result);
+        return User.findById(req.userId);
+    }).then((user) => {
+        creator = user;
+        user.posts.push(post);
+        return user.save();
+    }).then((result) => {
         res.status(201).json({ // 201: success and resource is created
             message: 'Post created successfully!',
-            post: result // result = data
+            post: post, // result = data
+            creator: { _id: creator._id, creator: creator.name }
         });
     }).catch((err) => {
         if (!err.statusCode) {

@@ -1,7 +1,7 @@
 {
-  "name": "module-25-advanced-rest-api",
+  "name": "module-26-async-await",
   "version": "1.0.0",
-  "description": "Advanced REST API",
+  "description": "Async and Await",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

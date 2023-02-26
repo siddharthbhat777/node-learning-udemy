@@ -3,9 +3,9 @@ const path = require('path');
 
 const { validationResult } = require('express-validator/check');
 
+const io = require('../socket');
 const Post = require('../models/post');
 const User = require('../models/user');
-const user = require('../models/user');
 
 exports.getPosts = async (req, res, next) => {
     const currentPage = req.query.page || 1; // keeping 1 as default value
@@ -49,6 +49,7 @@ exports.createPost = async (req, res, next) => {
         const user = await User.findById(req.userId);
         user.posts.push(post);
         await user.save();
+        io.getIO().emit('posts', { action: 'create', post: post });
         res.status(201).json({ // 201: success and resource is created
             message: 'Post created successfully!',
             post: post, // result = data

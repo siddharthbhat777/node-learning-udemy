@@ -1,5 +1,6 @@
 const { buildSchema } = require("graphql");
 
+// '!' means the field is required
 module.exports = buildSchema(`
     type TestData {
         text: String!

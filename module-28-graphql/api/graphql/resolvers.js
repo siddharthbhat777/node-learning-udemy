@@ -3,6 +3,7 @@ const validator = require('validator');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+const Post = require('../models/post');
 
 module.exports = {
     createUser: async function ({ userInput }, req) {
@@ -57,5 +58,32 @@ module.exports = {
             { expiresIn: '1h' } // added expiration time
         );
         return { token: token, userId: user._id.toString() }; // passing token and user id to frontend
+    },
+    createPost: async function ({ postInput }, req) {
+        const errors = [];
+        // checking if title entered is valid i.e. atleast of length 5
+        if (validator.isEmpty(postInput.title) || !validator.isLength(postInput.title, { min: 5 })) {
+            errors.push({ message: 'Title is invalid.' });
+        }
+        // checking if content entered is valid i.e. atleast of length 5
+        if (validator.isEmpty(postInput.content) || !validator.isLength(postInput.content, { min: 5 })) {
+            errors.push({ message: 'Content is invalid.' });
+        }
+        // checking if any other error exist
+        if (errors.length > 0) {
+            const error = new Error('Invalid input.');
+            error.data = errors;
+            error.code = 422;
+            throw error;
+        }
+        // now from here on your input is valid
+        const post = new Post({
+            title: postInput.title,
+            content: postInput.content,
+            imageUrl: postInput.imageUrl
+        });
+        const createdPost = await post.save();
+        // Add post to user's posts
+        return { ...createdPost._doc, _id: createdPost._id.toString(), createdAt: createdPost.createdAt.toISOString(), updatedAt: createdPost.updatedAt.toISOString() };
     }
 };

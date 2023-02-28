@@ -162,7 +162,7 @@ class Feed extends Component {
       },
       body: formData
     }).then(res => res.json()).then(fileResData => {
-      const imageUrl = fileResData.filePath.replace('\\', '\\\\') || 'undefined'
+      const imageUrl = fileResData.filePath.replace('\\', '\\\\') || 'undefined';
       let graphqlQuery = {
         query: `
           mutation {

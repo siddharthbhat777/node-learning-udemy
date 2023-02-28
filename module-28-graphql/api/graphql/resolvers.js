@@ -60,6 +60,11 @@ module.exports = {
         return { token: token, userId: user._id.toString() }; // passing token and user id to frontend
     },
     createPost: async function ({ postInput }, req) {
+        if (!req.isAuth) {
+            const error = new Error('Not authenticated!');
+            error.code = 401;
+            throw error;
+        }
         const errors = [];
         // checking if title entered is valid i.e. atleast of length 5
         if (validator.isEmpty(postInput.title) || !validator.isLength(postInput.title, { min: 5 })) {
@@ -76,14 +81,22 @@ module.exports = {
             error.code = 422;
             throw error;
         }
+        const user = await User.findById(req.userId);
+        if (!user) {
+            const error = new Error('Invalid user.');
+            error.code = 401;
+            throw error;
+        }
         // now from here on your input is valid
         const post = new Post({
             title: postInput.title,
             content: postInput.content,
-            imageUrl: postInput.imageUrl
+            imageUrl: postInput.imageUrl,
+            creator: user
         });
         const createdPost = await post.save();
         // Add post to user's posts
+        user.posts.push(createdPost);
         return { ...createdPost._doc, _id: createdPost._id.toString(), createdAt: createdPost.createdAt.toISOString(), updatedAt: createdPost.updatedAt.toISOString() };
     }
 };

@@ -22,19 +22,31 @@ class Feed extends Component {
   };
 
   componentDidMount() {
-    fetch('http://localhost:8080/auth/status', {
+    const graphqlQuery = {
+      query: `
+        {
+          user {
+            status
+          }
+        }
+      `
+    };
+    fetch('http://localhost:8080/graphql', {
+      method: 'POST',
       headers: {
-        Authorization: 'Bearer ' + this.props.token
-      }
+        Authorization: 'Bearer ' + this.props.token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(graphqlQuery)
     })
       .then(res => {
-        if (res.status !== 200) {
-          throw new Error('Failed to fetch user status.');
-        }
         return res.json();
       })
       .then(resData => {
-        this.setState({ status: resData.status });
+        if (resData.errors) {
+          throw new Error('Fetching status failed!');
+        }
+        this.setState({ status: resData.data.user.status });
       })
       .catch(this.catchError);
 
@@ -152,7 +164,7 @@ class Feed extends Component {
     const formData = new FormData();
     formData.append('image', postData.image);
     if (this.state.editPost) {
-      formData.append('oldPath', this.state.editPost.imagePath); 
+      formData.append('oldPath', this.state.editPost.imagePath);
     }
 
     fetch('http://localhost:8080/post-image', {
@@ -198,7 +210,7 @@ class Feed extends Component {
           `
         };
       }
-  
+
       return fetch('http://localhost:8080/graphql', {
         method: 'POST',
         body: JSON.stringify(graphqlQuery),
@@ -239,7 +251,9 @@ class Feed extends Component {
             );
             updatedPosts[postIndex] = post;
           } else {
-            updatedPosts.pop();
+            if (prevState.posts.length >= 2) {
+              updatedPosts.pop();
+            }
             updatedPosts.unshift(post);
           }
           return {

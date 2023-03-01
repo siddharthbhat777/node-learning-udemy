@@ -1,0 +1,8 @@
+{
+    "env": {
+        "MONGO_USER":"node-learning-app",
+        "MONGO_PASSWORD":"SidB2023",
+        "MONGO_DEFAULT_DATABASE":"shop",
+        "STRIPE_KEY":"sk_test_51MeAlHSHVA7qFsmuchzBdTKJJ3TxIJpTwxFyQjulVRTyNcOSiQY4bkVIaV78SrBDZrVrJDnKfRKZxoEv8r0JEh1a00uv2fePkS"
+    }
+}

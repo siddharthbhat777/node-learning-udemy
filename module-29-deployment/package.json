@@ -5,8 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "start-server": "node app.js"
+    "start": "set NODE_ENV=production&&set MONGO_USER=node-learning-app&&set MONGO_PASSWORD=SidB2023&&set MONGO_DEFAULT_DATABASE=shop&&set STRIPE_KEY=sk_test_51MeAlHSHVA7qFsmuchzBdTKJJ3TxIJpTwxFyQjulVRTyNcOSiQY4bkVIaV78SrBDZrVrJDnKfRKZxoEv8r0JEh1a00uv2fePkS&&node app.js",
+    "start-server": "node app.js",
+    "start:dev": "nodemon app.js"
   },
   "author": "Siddharth Bhat",
   "license": "ISC",

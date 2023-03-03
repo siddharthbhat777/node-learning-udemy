@@ -1,0 +1,13 @@
+Note: If you have Linux or MAC OS, then you can skip step 1 and 2.
+
+1. Install openssl from here "https://slproweb.com/products/Win32OpenSSL.html"
+2. After installing add this "C:\Program Files\OpenSSL-Win64\bin" path in your 'path' environment variable.
+3. Then type following command in terminal
+    openssl req -nodes -new -x509 -keyout server.key -out server.cert
+4. Then put valid values to the asked questions
+5. Then read your private key and certificate in constants as shown below
+    const privateKey = fs.readFileSync('server.key'); 
+    const certificate = fs.readFileSync('server.cert');
+6. Then use it like this:
+    https.createServer({ key: privateKey, cert: certificate }, app).listen(process.env.PORT || 3000);
+7. Now you can use your website with https.

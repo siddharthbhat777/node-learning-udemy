@@ -12,3 +12,12 @@
 
 5. crypto
     - generate random valued buffer
+
+6. helmet
+    - set several headers to make application secure
+
+7. compression
+    - reduce the size of the assets in runtime which keep your application well optimised and fast
+
+8. morgan
+    - log the information of requests and responses fired over an application

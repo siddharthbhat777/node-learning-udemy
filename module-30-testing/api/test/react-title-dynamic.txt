@@ -1,0 +1,3 @@
+https://dev.to/luispa/how-to-add-a-dynamic-title-on-your-react-app-1l7k
+
+https://www.kindacode.com/article/ways-to-set-page-title-dynamically-in-react/

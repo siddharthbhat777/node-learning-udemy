@@ -48,12 +48,13 @@ exports.createPost = async (req, res, next) => {
         await post.save();
         const user = await User.findById(req.userId);
         user.posts.push(post);
-        await user.save();
+        const saveUser = await user.save();
         res.status(201).json({ // 201: success and resource is created
             message: 'Post created successfully!',
             post: post, // result = data
             creator: { _id: user._id, creator: user.name }
         });
+        return saveUser;
     } catch (err) {
         if (!err.statusCode) {
             err.statusCode = 500;

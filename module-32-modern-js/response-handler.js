@@ -1,5 +1,5 @@
-// const fs = require('fs');
-import fs from "fs";
+// const fs = require('fs').promises;
+import fs from "fs/promises";
 import path, { dirname, join } from "path";
 import { fileURLToPath } from "url";
 
@@ -11,7 +11,12 @@ export const resHandler = (req, res, next) => { // if you use export like this t
     // fs.readFile('my-page.html', 'utf8', (err, data) => {
     //     res.send(data);
     // });
-    res.sendFile(path.join(__dirname, 'my-page.html'));
+    fs.readFile('my-page.html', 'utf8').then((data) => {
+        res.send(data);
+    }).catch(err => {
+        console.log(err);
+    });
+    // res.sendFile(path.join(__dirname, 'my-page.html'));
 };
 
 // module.exports = resHandler;

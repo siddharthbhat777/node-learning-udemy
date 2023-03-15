@@ -1,0 +1,3 @@
+- global modules like '__dirname' are not available in ES
+- ES don't deal with global modules
+- but there is way using it and that is by importing the modules you need.

@@ -11,11 +11,20 @@ function add(num1: number | string, num2: number | string) {
     return +num1 + +num2;
 }
 
+const numResults: number[] = [];
+const textResults: string[] = [];
+
+function printResult(resultObject: { val: number; timestamp: Date }) {
+    console.log(resultObject.val);
+}
+
 buttonElement.addEventListener('click', () => {
     const num1 = num1Element.value;
     const num2 = num2Element.value;
     const result = add(+num1, +num2);
+    numResults.push(result as number);
     const stringResult = add(num1, num2);
-    console.log(result);
-    console.log(stringResult);
+    textResults.push(stringResult as string);
+    printResult({ val: result as number, timestamp: new Date() });
+    console.log(numResults, textResults);
 });

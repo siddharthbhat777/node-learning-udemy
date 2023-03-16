@@ -10,11 +10,18 @@ function add(num1, num2) {
     }
     return +num1 + +num2;
 }
+var numResults = [];
+var textResults = [];
+function printResult(resultObject) {
+    console.log(resultObject.val);
+}
 buttonElement.addEventListener('click', function () {
     var num1 = num1Element.value;
     var num2 = num2Element.value;
     var result = add(+num1, +num2);
+    numResults.push(result);
     var stringResult = add(num1, num2);
-    console.log(result);
-    console.log(stringResult);
+    textResults.push(stringResult);
+    printResult({ val: result, timestamp: new Date() });
+    console.log(numResults, textResults);
 });

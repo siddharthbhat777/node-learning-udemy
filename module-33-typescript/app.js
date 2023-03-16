@@ -1,6 +1,8 @@
 var num1Element = document.getElementById('num1');
 var num2Element = document.getElementById('num2');
 var buttonElement = document.querySelector('button');
+var numResults = [];
+var textResults = [];
 function add(num1, num2) {
     if (typeof num1 === "number" && typeof num2 === "number") {
         return num1 + num2;
@@ -10,8 +12,6 @@ function add(num1, num2) {
     }
     return +num1 + +num2;
 }
-var numResults = [];
-var textResults = [];
 function printResult(resultObject) {
     console.log(resultObject.val);
 }

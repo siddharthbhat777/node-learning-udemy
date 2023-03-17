@@ -4,7 +4,8 @@
   "description": "NodeJs Application with Typescript",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/app.js"
   },
   "author": "Siddharth Bhat",
   "license": "ISC",
